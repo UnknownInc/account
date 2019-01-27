@@ -1,6 +1,9 @@
 const fs = require('fs');
 const express = require('express');
 const util = require('util');
+const bodyParser = require('body-parser');
+
+const routes = require('./routes');
 
 const app = express();
 
@@ -24,8 +27,9 @@ function initialize(){
 initialize();
 
 app.use(express.static('build'));
-app.use(express.urlencoded({extended: true})); 
-app.use(express.json());
+// Configure app to user bodyParser
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 app.get('/_status',async (req, res, next)=>{
     let result = Object.assign({}, app.status);
@@ -39,11 +43,14 @@ app.get('/_status',async (req, res, next)=>{
     return;
 })
 
+// Register our routes in app
+app.use('/', routes);
+
 let server = app.listen(app.config.port, () => {
     console.log(`Account http server listening on port ${app.config.port}!`)
 });
 
-function closeApplication(){
+server.shutdown = function closeApplication(){
     if (server===null) return; 
     console.log('closing http server.');
     server.close(() => {
@@ -69,10 +76,12 @@ function closeApplication(){
 
 process.on('SIGTERM', () => {
     console.info('SIGTERM signal received.');
-    closeApplication();
+    server.shutdown();
 });
 
 process.on('SIGINT', () => {
     console.info('SIGINT signal received.');
-    closeApplication();
+    server.shutdown();
 });
+
+module.exports = server;

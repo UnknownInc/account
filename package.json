@@ -4,7 +4,8 @@
   "description": "account service",
   "main": "server.js",
   "scripts": {
-    "test": "npm test"
+    "test": "nyc --reporter=html --reporter=text mocha",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -23,8 +24,15 @@
   },
   "homepage": "https://github.com/UnknownInc/account#readme",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "emailjs": "^2.2.0",
     "express": "^4.16.4",
     "ioredis": "^4.5.1"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.1",
+    "mocha": "^5.2.0",
+    "nyc": "^13.1.0"
   }
 }
