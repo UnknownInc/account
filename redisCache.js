@@ -3,17 +3,17 @@ const Redis = require('ioredis');
 const util = require('util');
 
 module.exports = {
-  createClient: function(app) {
+  createClient: function (app) {
     try {
-      app.status=app.status||{};
-      app.status.redis={};
+      app.status = app.status || {};
+      app.status.redis = {};
 
       let REDIS_PASSWORD = process.env.REDIS_PASSWORD
       if (fs.existsSync('/etc/redis/redis-password')) {
-        REDIS_PASSWORD = fs.readFileSync('/etc/redis/redis-password').toString(); 
+        REDIS_PASSWORD = fs.readFileSync('/etc/redis/redis-password').toString();
       }
-  
-      const namespace = process.env.NAMESPACE.replace('-','_').toUpperCase();
+
+      const namespace = process.env.NAMESPACE ? process.env.NAMESPACE.replace('-', '_').toUpperCase() : '';
       /*
       const nodes = [];
       nodes.push({ 
@@ -35,32 +35,32 @@ module.exports = {
       });
       */
 
-     app.cache = new Redis({
-      host: process.env[namespace + '_FECACHE_MASTER_SERVICE_HOST'], 
-      port: Number.parseInt(process.env[namespace +'_FECACHE_MASTER_SERVICE_PORT']),
-      password: REDIS_PASSWORD
-     })
-  
-      app.cache.on('connect', function(err){
+      app.cache = new Redis({
+        host: process.env[namespace + '_FECACHE_MASTER_SERVICE_HOST'],
+        port: Number.parseInt(process.env[namespace + '_FECACHE_MASTER_SERVICE_PORT']),
+        password: REDIS_PASSWORD
+      })
+
+      app.cache.on('connect', function (err) {
         app.status.redis.connectionStatus = 'connected';
         app.status.redis.serverInfo = Object.assign({}, app.cache.server_info);
       });
-      app.cache.on('error', function(err){
-        app.status.redis.lastError=err;
-        console.error('REDIS ERROR: ',err);
+      app.cache.on('error', function (err) {
+        app.status.redis.lastError = err;
+        console.error('REDIS ERROR: ', err);
       });
-      app.cache.on('ready', function(err){
+      app.cache.on('ready', function (err) {
         app.status.redis.connectionStatus = 'ready';
       });
-      app.cache.on('end', function(err){
+      app.cache.on('end', function (err) {
         app.status.redis.connectionStatus = 'disconnected';
       });
-      app.cache.on('reconnecting', function(err){
+      app.cache.on('reconnecting', function (err) {
         app.status.redis.connectionStatus = 'reconnecting';
       });
-    } catch(e) {
+    } catch (e) {
       console.error('Unable to read the REDIS credentials file.');
-      console.error( util.inspect(e, {color:true}));
+      console.error(util.inspect(e, { color: true }));
     }
   }
 }
