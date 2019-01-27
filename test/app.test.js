@@ -8,7 +8,7 @@ chai.should();
 
 const app = require('../server');
 
-afterEach(()=>{
+after(()=>{
   app.shutdown();
 })
 

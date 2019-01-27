@@ -26,11 +26,14 @@ function initialize(){
 
 initialize();
 
-app.use(express.static('build'));
+//app.use(express.static('build'));
 // Configure app to user bodyParser
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+app.get('/', (req, res)=>{
+    res.send('account');
+})
 app.get('/_status',async (req, res, next)=>{
     let result = Object.assign({}, app.status);
     result.config = Object.assign({},app.config);
