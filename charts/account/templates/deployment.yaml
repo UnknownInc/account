@@ -41,7 +41,7 @@ spec:
           valueFrom:
             secretKeyRef: 
               name: "{{.Release.Namespace}}-db1"
-              key: mongo-root-password
+              key: mongodb-root-password
 {{- if .Values.env}}
 {{ toYaml .Values.env | indent 8 }}
 {{- end }}
