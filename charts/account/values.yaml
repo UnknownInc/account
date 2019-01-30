@@ -15,8 +15,8 @@ service:
     fabric8.io/expose: "true"
     fabric8.io/ingress.annotations: "kubernetes.io/ingress.class: nginx"
 env:
-  name: ACCTCACHE
-  value: FECACHE
+  - name: ACCTCACHE
+    value: FECACHE
 resources:
   limits:
     cpu: 400m
