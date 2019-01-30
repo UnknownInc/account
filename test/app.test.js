@@ -1,21 +1,45 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const expect = chai.expect;
+const mongoose =require('mongoose');
+const MongoMemoryServer = require('mongodb-memory-server').default;
+const MockRedis = require('ioredis-mock');
+const app = require('../app');
 
 // Configure chai
 chai.use(chaiHttp);
 chai.should();
 
-const app = require('../server');
+app.cache = new MockRedis();
+app.cache.end = function() {};
 
-after(()=>{
-  app.shutdown();
+let server ;
+
+let mongoServer;
+const opts = { useNewUrlParser: true };
+ 
+before((done) => {
+  mongoServer = new MongoMemoryServer();
+  mongoServer.getConnectionString().then((mongoUri) => {
+    return mongoose.connect(mongoUri, opts, (err) => {
+      if (err) done(err);
+    });
+  }).then(() => {
+    server = require('../server');
+    done()
+  });
+});
+ 
+after(() => {
+  mongoose.disconnect();
+  mongoServer.stop();
+  server.shutdown();
 })
 
 describe("GET /_status", ()=>{
 
   before(async () =>{
-    this.requester = chai.request(app).keepOpen(false);
+    this.requester = chai.request(server).keepOpen(false);
     this.res = await this.requester.get('/_status');
   })
 

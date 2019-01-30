@@ -14,6 +14,9 @@ service:
   annotations:
     fabric8.io/expose: "true"
     fabric8.io/ingress.annotations: "kubernetes.io/ingress.class: nginx"
+env:
+  name: ACCTCACHE
+  value: FECACHE
 resources:
   limits:
     cpu: 400m
@@ -21,7 +24,7 @@ resources:
   requests:
     cpu: 200m
     memory: 128Mi
-probePath: /
+probePath: /ping
 livenessProbe:
   initialDelaySeconds: 60
   periodSeconds: 10
