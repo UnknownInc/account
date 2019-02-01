@@ -20,6 +20,7 @@ pipeline {
       steps {
         container('nodejs') {
           sh "npm install"
+          sh "npm run build"
           sh "CI=true DISPLAY=:99 npm test"
           sh "rm -rf node_modules"
           sh "export VERSION=$PREVIEW_VERSION && skaffold build -f skaffold.yaml"
@@ -47,6 +48,7 @@ pipeline {
           sh "echo \$(jx-release-version) > VERSION"
           sh "jx step tag --version \$(cat VERSION)"
           sh "npm install"
+          sh "npm run build"
           sh "CI=true DISPLAY=:99 npm test"
           sh "rm -rf node_modules"
           sh "export VERSION=`cat VERSION` && skaffold build -f skaffold.yaml"

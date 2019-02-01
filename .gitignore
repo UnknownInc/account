@@ -51,6 +51,9 @@ typings/
 # Output of 'npm pack'
 *.tgz
 
+# debug logs
+*.log
+
 # Yarn Integrity file
 .yarn-integrity
 
@@ -59,6 +62,8 @@ typings/
 
 # next.js build output
 .next
+
+build
 
 .DS_STORE
 localdevsetup.sh

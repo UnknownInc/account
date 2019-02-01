@@ -2,7 +2,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const expect = chai.expect;
 
-const redisCache = require('../redisCache');
+const redisCache = require('../src/redisCache');
 
 // Configure chai
 chai.use(chaiHttp);
@@ -29,6 +29,7 @@ describe('set redis options', ()=>{
     process.env.NAMESPACE = origNamespace;
     process.env.REDIS_PASSWORD = origPassword;
   })
+
   it('read be able to password from env var REDIS_PASSWORD', ()=>{
     const password = redisCache.getPassword();
     password.should.be.equal(testPassword, 'password values dont match');
@@ -44,7 +45,6 @@ describe('set redis options', ()=>{
   })
 
   it('should read host & port from environment', ()=>{
-
     const opts=redisCache.getRedisOpts();
 
     opts.host.should.be.equal(testHostName,"host is not correctly read from env");

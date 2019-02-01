@@ -4,7 +4,7 @@ const expect = chai.expect;
 const mongoose =require('mongoose');
 const MongoMemoryServer = require('mongodb-memory-server').default;
 const MockRedis = require('ioredis-mock');
-const app = require('../app');
+import app from '../src/app';
 
 // Configure chai
 chai.use(chaiHttp);
@@ -25,7 +25,7 @@ before((done) => {
       if (err) done(err);
     });
   }).then(() => {
-    server = require('../server');
+    server = require('../src/server');
     done()
   });
 });
@@ -36,23 +36,46 @@ after(() => {
   server.shutdown();
 })
 
-describe("GET /_status", ()=>{
-
+describe("GET /ping",()=>{
+  let requester;
+  let pingResult;
   before(async () =>{
-    this.requester = chai.request(server).keepOpen(false);
-    this.res = await this.requester.get('/_status');
+    requester = chai.request(server).keepOpen(false);
+    pingResult = await requester.get('/ping');
+  })
+  after(()=>{
+    requester.close();
+  })
+  
+  it("should return status code 200",()=>{
+    expect(pingResult).to.have.status(200);
+  })
+  it("should return text", ()=>{
+    expect(pingResult).to.have.header('content-type', /^text/);
+  })
+  it("shoud return pong", ()=>{
+    expect(pingResult.text).to.be.equal('pong','ping output not pong');
+  })
+})
+
+describe("GET /_status", ()=>{
+  let requester;
+  let res;
+  before(async () =>{
+    requester = chai.request(server).keepOpen(false);
+    res = await requester.get('/_status');
   })
 
   after(()=>{
-    this.requester.close();
+    requester.close();
   })
 
   it("should return 200", ()=>{
-    expect(this.res).to.have.status(200);
+    expect(res).to.have.status(200);
   })
 
   it("should return json object", ()=>{
-    expect(this.res).to.be.json;
+    expect(res).to.be.json;
   })
 })
 

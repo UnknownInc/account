@@ -1,0 +1,11 @@
+{
+    "description": "nyc settings",
+    "nyc": {
+        "require": [
+          "@babel/register",
+          "@babel/polyfill"
+        ],
+        "sourceMap": false,
+        "instrument": false
+    }
+}

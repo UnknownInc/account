@@ -41,12 +41,10 @@ app.get('/_status', async (req, res, next) => {
     cache: app.cache.status
   };
 
-  res.json(result);
-  return;
+  return res.json(result);
 })
 
 // Register our routes in app
 app.use('/', routes);
-
 
 module.exports = app;
