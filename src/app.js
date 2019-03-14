@@ -13,15 +13,17 @@ app.config = {};
 app.config.port = process.env.PORT || 8080;
 app.config.env = process.env;
 
-app.initialize = function initialize(){
+app.initialize = async function initialize(){
   try {
-    app.config.VERSION = fs.readFileSync('./VERSION').toString();
+    app.config.VERSION = fs.readFileSync('./VERSION').toString().trim();
   } catch (e) {
     console.error('Unable to read the VERSION file.');
     console.error(util.inspect(e, { color: true }));
   }
 
   require('./redisCache').createClient(app);
+  require('./emails/mailer').createClient(app);
+  await require('./db').createClient(app);
 }
 
 // app.use(express.static('build'));
@@ -38,7 +40,8 @@ app.get('/_status', async (req, res, next) => {
   result.config = Object.assign({}, app.config);
 
   result.health = {
-    cache: app.cache.status
+    cache: app.cache.status,
+    db: app.db.readyState,
   };
 
   return res.json(result);

@@ -58,12 +58,14 @@ module.exports = {
       app.status.redis = app.status.redis || {};
 
       if (app.cache) return;
-      
+
       const options = getRedisOpts();
 
       app.cache = new Redis(options);
 
       setConnectEvents(app);
+
+      return app.cache;
 
     } catch (e) {
       console.error('Unable to read the REDIS credentials file.');

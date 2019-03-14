@@ -1,9 +1,11 @@
 
 import app from './app';
 
-app.initialize();
+var server;
 
-let server = app.listen(app.config.port, () => {
+server = app.listen(app.config.port, async () => {
+
+  await app.initialize()
   console.log(`Account http server listening on port ${app.config.port}!`)
 });
 
@@ -19,14 +21,14 @@ server.shutdown = function closeApplication() {
           console.error('ERROR: unable to end cache connection.', cerr);
       }
 
-      process.exit(0);
-      /*
+      //process.exit(0);
+      
       // boolean means [force], see in mongoose doc
       mongoose.connection.close(false, () => {
           console.log('MongoDb connection closed.');
           process.exit(0);
       });
-      */
+      
   });
 }
 

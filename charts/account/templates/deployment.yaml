@@ -29,6 +29,12 @@ spec:
         volumeMounts:
         - name: mongo
           mountPath: "/etc/mongo"
+        volumeMounts:
+        - name: db
+          mountPath: "/etc/db"
+        volumeMounts:
+        - name: mailer
+          mountPath: "/etc/mailer"
         env:
         - name: NAMESPACE
           value: "{{.Release.Namespace}}"
@@ -37,6 +43,27 @@ spec:
             secretKeyRef: 
               name: "{{.Release.Namespace}}-fecache"
               key: redis-password
+        - name: DB_CONN
+          valueFrom:
+            secretKeyRef: 
+              name: "{{.Release.Namespace}}-pulsedb"
+              key: connstr
+        - name: MAIL_USER
+          valueFrom:
+            secretKeyRef:
+              name: "{{.Release.Namespace}}-mailer"
+              key: mailuser
+        - name: MAIL_PASS
+          valueFrom:
+            secretKeyRef:
+              name: "{{.Release.Namespace}}-mailer"
+              key: mailpassword
+        - name: MAIL_HOST
+          value: smtp.gmail.com
+        - name: MAIL_PORT
+          value: 587
+        - name: MAIL_FROM
+          value: rmcloudsoftware@rareminds.in
         - name: DB1_PASSWORD
           valueFrom:
             secretKeyRef: 
@@ -70,3 +97,9 @@ spec:
       - name: mongo
         secret:
           secretName: "{{.Release.Namespace}}-db1"
+      - name: db
+        secret:
+          secretName: "{{.Release.Namespace}}-pulsedb"
+      - name: mailer
+        secret:
+          secretName: "{{.Release.Namespace}}-mailer"

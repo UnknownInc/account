@@ -4,9 +4,14 @@
   "description": "account service",
   "main": "server.js",
   "scripts": {
-    "test": "cross-env node_env=test nyc --reporter=html --reporter=text --timeout 60000 --require @babel/register --require @babel/polyfill mocha",
+    "type-check": "tsc --noEmit",
+    "type-check:watch": "npm run type-check -- --watch",
+    "build:types": "tsc --emitDeclarationOnly",
+    "testcover": "cross-env node_env=test nyc --reporter=html --reporter=text --timeout 60000 --require @babel/register --require @babel/polyfill mocha",
+    "test": "cross-env node_env=test mocha --reporter tap --timeout 60000 --require @babel/register --require @babel/polyfill",
+    "testwatch": "cross-env node_env=test mocha --reporter landing --watch --timeout 60000 --require @babel/register --require @babel/polyfill",
     "build": "babel src --out-dir build",
-    "dev": "npm run build && npm run start",
+    "dev": "nodemon --exec babel-node src/server.js",
     "start": "node build/server.js"
   },
   "repository": {
@@ -30,12 +35,17 @@
     "emailjs": "^2.2.0",
     "express": "^4.16.4",
     "ioredis": "^4.5.1",
-    "mongoose": "^5.4.7"
+    "mongoose": "^5.4.7",
+    "nodemailer": "^5.1.1",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.2.2",
     "@babel/node": "^7.2.2",
+    "@babel/plugin-proposal-class-properties": "^7.3.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.3.1",
+    "@babel/plugin-transform-async-to-generator": "^7.3.4",
     "@babel/polyfill": "^7.2.5",
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-typescript": "^7.1.0",
@@ -50,7 +60,9 @@
     "ioredis-mock": "^4.7.0",
     "mocha": "^5.2.0",
     "mongodb-memory-server": "^3.0.0",
+    "nodemon": "^1.18.10",
     "nyc": "^13.1.0",
-    "temp-write": "^3.4.0"
+    "temp-write": "^3.4.0",
+    "typescript": "^3.3.1"
   }
 }
