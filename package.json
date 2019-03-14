@@ -31,6 +31,7 @@
   },
   "homepage": "https://github.com/UnknownInc/account#readme",
   "dependencies": {
+    "@babel/runtime": "^7.3.4",
     "body-parser": "^1.18.3",
     "emailjs": "^2.2.0",
     "express": "^4.16.4",
@@ -46,6 +47,7 @@
     "@babel/plugin-proposal-class-properties": "^7.3.0",
     "@babel/plugin-proposal-object-rest-spread": "^7.3.1",
     "@babel/plugin-transform-async-to-generator": "^7.3.4",
+    "@babel/plugin-transform-runtime": "^7.3.4",
     "@babel/polyfill": "^7.2.5",
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-typescript": "^7.1.0",

@@ -10,6 +10,11 @@ module.exports = function (api) {
     "@babel/proposal-class-properties",
     "@babel/proposal-object-rest-spread",
     "@babel/plugin-transform-async-to-generator",
+    ["@babel/plugin-transform-runtime",
+      {
+        "regenerator": true
+      }
+    ]
   ];
 
   return {
