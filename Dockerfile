@@ -9,8 +9,8 @@ RUN npm install
 
 COPY . /app
 
-# Build react/vue/angular bundle static files
-# RUN npm run build
+# Build react/vue/angular/transpile bundle static files
+RUN npm run build
 
 #RUN rm -rf /app/node_modules
 
