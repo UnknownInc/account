@@ -60,7 +60,8 @@ exports.register = async (req, res) => {
   } catch (err) {
     console.error(err);
     return res.status(500).json({
-      Error: 'Unexpected error on the server.'
+      Error: 'Unexpected error on the server.',
+      ie:err
     });
   }
 }
@@ -109,6 +110,10 @@ exports.verify = async (req, res) => {
     return res.sendStatus(200);
 
   } catch(err) {
-
+    console.error(err);
+    return res.status(500).json({
+      Error: 'Unexpected error on the server.',
+      ie:err
+    });
   }
 }
