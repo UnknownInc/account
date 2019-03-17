@@ -37,21 +37,23 @@ exports.register = async (req, res) => {
       })
     }
 
+    await User.create({email: email.address, company: company._id})
+
     const token = await Token.create({
       token: uuidv4(), 
       email: email.address, 
-      returnUrl:'http://example.com', 
-      state:{data:'xyz'}
+      returnUrl: req.body.returnUrl, 
+      state: req.body.state
     });
     
     const data ={
       to:email.address,
       token:token.token,
-      companyUrl:`${req.protocol}://${req.get('host')}/${email.companyname}`,
+      companyUrl:req.body.companyUrl,
       appName:'m360'
     }
     const emailContent = require('../emails/templates/verify').confirm(data)
-    emailContent.from=process.env.MAIL_USER;
+    emailContent.from=process.env.MAIL_FROM;
 
     await req.app.mailer.sendMail(emailContent)
 
@@ -61,7 +63,6 @@ exports.register = async (req, res) => {
     console.error(err);
     return res.status(500).json({
       Error: 'Unexpected error on the server.',
-      ie:err
     });
   }
 }
@@ -106,6 +107,8 @@ exports.verify = async (req, res) => {
     user.isVerified = true;
     
     await user.save()
+
+    await trecord.delete()
     
     return res.sendStatus(200);
 
@@ -113,7 +116,6 @@ exports.verify = async (req, res) => {
     console.error(err);
     return res.status(500).json({
       Error: 'Unexpected error on the server.',
-      ie:err
     });
   }
 }

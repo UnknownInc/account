@@ -58,10 +58,6 @@ spec:
             secretKeyRef:
               name: "{{.Release.Namespace}}-mailer"
               key: mailpassword
-        - name: MAIL_HOST
-          value: "smtp.gmail.com"
-        - name: MAIL_PORT
-          value: "587"
         - name: MAIL_FROM
           value: "rmcloudsoftware@rareminds.in"
         - name: DB1_PASSWORD

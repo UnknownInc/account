@@ -14,13 +14,11 @@ module.exports = {
 
     // The credentials for the email account you want to send mail from. 
     const credentials = {
-      host: process.env.MAIL_HOST,
-      port: process.env.MAIL_PORT,
-      secure: true,
+      service:"gmail",
       auth: {
         // These environment variables will be pulled from the env
-        user: process.env.MAIL_USER, 
-        pass: process.env.MAIL_PASS  
+        user: (process.env.MAIL_USER || '').trim(), 
+        pass: (process.env.MAIL_PASS || '').trim()  
       }
     }
 
