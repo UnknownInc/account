@@ -11,7 +11,7 @@ app.status = {};
 
 app.config = {};
 app.config.port = process.env.PORT || 8080;
-app.config.env = process.env;
+//app.config.env = process.env;
 
 app.initialize = async function initialize(){
   try {

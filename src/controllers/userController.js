@@ -31,13 +31,15 @@ exports.register = async (req, res) => {
     }
 
     const user = await User.findByEmail(email.address)
-    if (user) {
+    if (!user) {
+      /*
       return res.status(409).json({
         Error: `User: ${email.accountname} is already registered.`
       })
+      */
+      await User.create({email: email.address, company: company._id})
     }
 
-    await User.create({email: email.address, company: company._id})
 
     const token = await Token.create({
       token: uuidv4(), 

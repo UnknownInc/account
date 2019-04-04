@@ -70,17 +70,14 @@ describe("POST /:company/register", ()=>{
       requester.close();
     })
     
-    it("should return status code 409",()=>{
-      expect(registerResult).to.have.status(409);
-    })
-
-    it("should return json", ()=>{
-      expect(registerResult).to.have.header('content-type', /json/);
+    it("should return status code 200",()=>{
+      expect(registerResult).to.have.status(200);
     })
   
-    it("should return a object with error field", ()=>{
-      expect(registerResult.body).to.have.property('Error');
-    }) 
+    it("should have creates a token record in db",async ()=>{
+      const token = await app.db.models.Token.findOne({email:'rravuri@gmail.com'})
+      expect(token).to.have.property('token')
+    })
   });
 
 
