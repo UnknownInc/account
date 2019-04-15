@@ -5,7 +5,7 @@ const ObjectId = Schema.Types.ObjectId;
 
 // Data we need to collect/confirm to have the app go.
 const fields = {
-  email: { type: String, required: true, unique: true},
+  email: { type: String, required: true, unique: true, trim: true},
   company: { type: ObjectId, ref: 'Company'},
   manager: {type: ObjectId, ref: 'User'},
   isVerified: { type: Boolean, default: false }
