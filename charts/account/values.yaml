@@ -13,6 +13,7 @@ service:
   internalPort: 8080
   annotations:
     fabric8.io/expose: "true"
+    fabric8.io/exposeUrl: https://staging.account.rmcloudsoftware.com
     fabric8.io/ingress.annotations: "kubernetes.io/ingress.class: nginx"
 env:
   - name: ACCTCACHE
