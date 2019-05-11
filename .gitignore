@@ -67,4 +67,5 @@ build
 
 .DS_STORE
 localdevsetup.sh
+stagingdevsetup.sh
 VERSION
